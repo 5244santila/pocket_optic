@@ -22,8 +22,9 @@ environment:
 
 dependencies:
   camera: ^0.8.1
-  path:
+  path_provider: ^2.0.1
   video_player: ^2.0.0
+  gallery_saver: ^2.1.0
   flutter:
     sdk: flutter
 

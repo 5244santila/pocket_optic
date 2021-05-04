@@ -12,8 +12,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-//import 'package:image_gallery_saver/image_gallery_saver.dart';
-//import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class CameraExampleHome extends StatefulWidget {
   @override
@@ -60,6 +60,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
   // Counting pointers (number of user fingers on screen)
   int _pointers = 0;
+
+  //Folder to save into gallery
+  String? albumName = 'Pocket Optic';
 
   @override
   void initState() {
@@ -372,7 +375,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
           videoController?.dispose();
           videoController = null;
         });
-        if (file != null) showInSnackBar('Picture saved to ${file.path}');
+        if (file != null) {
+          showInSnackBar('Picture saved'); // to ${file.path}');
+        }
       }
     });
   }
@@ -415,9 +420,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     stopVideoRecording().then((file) {
       if (mounted) setState(() {});
       if (file != null) {
-        showInSnackBar('Video recorded to ${file.path}');
+        showInSnackBar('Video recorded'); // to ${file.path}');
         videoFile = file;
-        _startVideoPlayer();
+        //_startVideoPlayer();
       }
     });
   }
@@ -451,6 +456,13 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     }
 
     try {
+      final video = await cameraController.stopVideoRecording();
+      //await GallerySaver.saveVideo(video.path, albumName: 'Pocket Optic');
+      await GallerySaver.saveVideo(video.path, albumName: 'Pocket Optic').then((bool ) {
+        setState(() {
+          print('Video saved to ${video.path}\n');
+        });
+      });
       return cameraController.stopVideoRecording();
     } on CameraException catch (e) {
       _showCameraException(e);
@@ -470,7 +482,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
       rethrow;
     }
   }
-
+/// Plays video in the video preview after video record
   Future<void> _startVideoPlayer() async {
     if (videoFile == null) {
       return;
@@ -511,6 +523,12 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
     try {
       XFile file = await cameraController.takePicture();
+     // await GallerySaver.saveImage(file.path, albumName: 'Pocket Optic');
+       await GallerySaver.saveImage(file.path, albumName: 'Pocket Optic').then((bool ) {
+        setState(() {
+          print('Image saved to ${file.path}\n');
+        });
+      });
       return file;
     } on CameraException catch (e) {
       _showCameraException(e);
