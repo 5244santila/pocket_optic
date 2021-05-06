@@ -12,8 +12,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:gallery_saver/gallery_saver.dart';
 
 class CameraExampleHome extends StatefulWidget {
   @override
@@ -150,7 +150,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 /// remove if statement by initializing cameraController
     if (cameraController == null || !cameraController.value.isInitialized) {
       return const Text(
-        'Chose your camera',
+        'Choose your camera',
         style: TextStyle(
           color: Colors.white,
           fontSize: 24.0,
@@ -406,7 +406,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   void onSetFlashModeButtonPressed(FlashMode mode) {
     setFlashMode(mode).then((_) {
       if (mounted) setState(() {});
-      showInSnackBar('Flash mode set to ${mode.toString().split('.').last}');
+      //showInSnackBar('Flash mode set to ${mode.toString().split('.').last}');
     });
   }
 
@@ -457,12 +457,11 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
     try {
       final video = await cameraController.stopVideoRecording();
-      //await GallerySaver.saveVideo(video.path, albumName: 'Pocket Optic');
-      await GallerySaver.saveVideo(video.path, albumName: 'Pocket Optic').then((bool ) {
-        setState(() {
-          print('Video saved to ${video.path}\n');
-        });
-      });
+      // await GallerySaver.saveVideo(video.path, albumName: 'Pocket Optic').then((bool ) {
+      //   setState(() {
+      //     print('Video saved to ${video.path}\n');
+      //   });
+      // });
       return cameraController.stopVideoRecording();
     } on CameraException catch (e) {
       _showCameraException(e);
@@ -523,12 +522,11 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
     try {
       XFile file = await cameraController.takePicture();
-     // await GallerySaver.saveImage(file.path, albumName: 'Pocket Optic');
-       await GallerySaver.saveImage(file.path, albumName: 'Pocket Optic').then((bool ) {
-        setState(() {
-          print('Image saved to ${file.path}\n');
-        });
-      });
+      // await GallerySaver.saveImage(file.path, albumName: 'Pocket Optic').then((bool ) {
+      //   setState(() {
+      //     print('Image saved to ${file.path}\n');
+      //   });
+      // });
       return file;
     } on CameraException catch (e) {
       _showCameraException(e);
